@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-4 custom-box">
+    <h1>Order A Pizza</h1>
+    <form class="form-wrapper" action="", method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

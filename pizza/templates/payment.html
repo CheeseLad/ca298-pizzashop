@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-4 custom-box">
+    <h1>Enter Your Payment Information</h1>
+    <form action="", method="POST" id="payment">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

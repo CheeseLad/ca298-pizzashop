@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+	<body>
+		{% block content %}
+		<div class="title-text2">
+			<h1 style="font-size: 60px; margin-bottom: 10px; padding-top: 40px; color: #ffffff; text-align: center;"><b>Welcome to Purrfect Pizza</b></h1>
+		</div>
+			<h3 style="font-size: 20px; padding: 20px; color: #ffffff; text-align: center;"><i>Where every order is made to pawfection!</i></h3>
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-9 custom-box">
+					{% if user.is_authenticated %}
+						<h1>Logged in as {{ user.email }}</h1>
+					{% else %}
+						<h1>Please login or register an account!</h1>
+					{% endif %}
+		<ul>
+			{% if user.is_authenticated %}
+			<div class="list-item">
+				<li><a href="{% url 'logout' %}">Logout</a></li>
+			</div>
+			<div class="list-item">
+				<li><a href="/order">Order A Pizza</a></li>
+			</div>
+			{% else %}
+			<div class="list-item">
+				<li><a href="/login">Login</a></li>
+			</div>
+			<div class="list-item">
+				<li><a href="{% url 'register' %}">Register</a></li>
+			</div>
+			{% endif %}
+	  </ul>
+	</div>
+	</div>
+	{% if user.is_authenticated %}
+	<div id="orders"></div>
+	<div class="row justify-content-center">
+		<div class="col-md-9 custom-box">
+			<h1>Your Orders</h1>
+			<div class="container-fluid">
+				<div class="row">
+					{% if orders %}
+					{% for order in orders %}
+					<div class="col-md-4 mb-3">
+						<div class="card">
+							<img src="static/img/pizza.jpg" class="card-img-top" alt="...">
+							<div class="card-body">
+								<h5 class="card-title">Order #{{ order.id }}</h5>
+								<p class="card-text">Your Order Details</p>
+							</div>
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item"><strong>Size:</strong> {{ order.pizza.size }}</li>
+								<li class="list-group-item"><strong>Crust:</strong> {{ order.pizza.crust }}</li>
+								<li class="list-group-item"><strong>Sauce:</strong> {{ order.pizza.sauce }}</li>
+								<li class="list-group-item"><strong>Cheese:</strong> {{ order.pizza.cheese }}</li>
+								<li class="list-group-item"><strong>Ordered:</strong> {{ order.date_ordered }}</li>
+							</ul>
+							<div class="card-body">
+								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#toppings{{ order.id }}">
+									View Toppings
+								</button>								
+							</div>
+						</div>
+					</div>
+					<div class="modal fade" id="toppings{{ order.id }}" tabindex="-1" aria-labelledby="toppings{{ order.id }}Label" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h1 class="modal-title fs-5" id="toppings{{ order.id }}Label"><strong>Pizza Toppings</strong></h1>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<ul>
+                    {% for topping in order.pizza.toppings.all %}
+                        <li>{{ topping.topping }}</li>
+                    {% endfor %}
+                </ul>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+								</div>
+							</div>
+						</div>
+					</div>
+									
+					{% endfor %}
+				{% else %}
+				<h3>No Orders Yet</h3>
+				{% endif %}
+			</div>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+			{% else %}
+</div>
+			{% endif %}
+	{% endblock %}
+	</body>
+</html>

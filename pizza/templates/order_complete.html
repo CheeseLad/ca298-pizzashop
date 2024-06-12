@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-7 custom-box">
+        <div style="padding: 20px; text-align: center; color: #ffffff; background-color: #202E4E; border-radius: 15px;">
+            <h1>Order #{{ order.id }} Complete</h1>
+            <h3>Thank you for your order. Your pizza is on its way and will be delivered to {{ order.payment.address_line_1 }} in approximately 30 minutes.</h3>
+            <h4>Expected Delivery Time: {{ arrival_time }}</h4>
+            <p><a href="/">Return to the homepage</a></p>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-md-9 custom-box">
+        <h1>Your Order</h1>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4 mb-3 mx-auto">
+                    <div class="card">
+                        <img src="static/img/pizza.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Order #{{ order.id }} Pizza Details</h5>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Size:</strong> {{ order.pizza.size }}</li>
+                            <li class="list-group-item"><strong>Crust:</strong> {{ order.pizza.crust }}</li>
+                            <li class="list-group-item"><strong>Sauce:</strong> {{ order.pizza.sauce }}</li>
+                            <li class="list-group-item"><strong>Cheese:</strong> {{ order.pizza.cheese }}</li>
+                        </ul>
+                        <div class="card-body">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#toppings{{ order.id }}">
+                                View Toppings
+                            </button>								
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3 mx-auto">
+                    <div class="card">
+                        <img src="static/img/pizza.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Order #{{ order.id }} Delivery Details</h5>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Name:</strong> {{ order.payment.name_on_card }}</li>
+                            <li class="list-group-item"><strong>Address:</strong> {{ order.payment.address_line_1 }}, {{ order.payment.address_line_2 }}, {{ order.payment.city }}, {{ order.payment.state }}, {{ order.payment.country }}, {{ order.payment.zip_code }}</li>
+                            {% with order.payment.card_number|stringformat:"16d" as card_number_str %}
+                                {% with card_number_str|slice:"-2:" as last_two_digits %}
+                                <li class="list-group-item"><strong>Payment Card:</strong> Ends with **{{ last_two_digits }}</li>
+                                {% endwith %}
+                            {% endwith %}
+                            <li class="list-group-item"><strong>Ordered:</strong> {{ order.date_ordered }}</li>
+                            <li class="list-group-item"><strong>Expected Delivery Time:</strong> {{ arrival_time }}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal fade" id="toppings{{ order.id }}" tabindex="-1" aria-labelledby="toppings{{ order.id }}Label" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="toppings{{ order.id }}Label"><strong>Pizza Toppings</strong></h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <ul>
+                {% for topping in order.pizza.toppings.all %}
+                    <li>{{ topping.topping }}</li>
+                {% endfor %}
+            </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                            
+
+            </div>
+        </div>
+    
+    </div>
+</div>
+{% endblock %}
