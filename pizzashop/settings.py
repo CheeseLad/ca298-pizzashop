@@ -30,6 +30,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'pizzashop.jakefarrell.ie']
 
+CSRF_TRUSTED_ORIGINS=['pizzashop.jakefarrell.ie']
+
 AUTH_USER_MODEL = 'pizza.User'
 
 # Application definition
